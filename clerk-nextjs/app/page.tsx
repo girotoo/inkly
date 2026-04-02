@@ -110,7 +110,7 @@ export default function HomePage() {
 
         <div className="fade-up w-full max-w-xs mb-4" style={{ animationDelay: "0.3s" }}>
           <button
-            onClick={() => router.push("/play")}
+            onClick={() => router.push("/home")}
             className="btn-main w-full rounded-2xl py-5 text-white font-display text-3xl text-center"
           >
             🎮 Jouer

@@ -263,7 +263,7 @@ export default function PlayPage() {
             {/* Solo */}
             <div className="fade-up w-full max-w-xs mb-3" style={{ animationDelay: "0.3s" }}>
               <button
-                onClick={() => router.push("/play/solo")}
+                onClick={() => router.push("/home/solo")}
                 className="mode-btn w-full bg-white rounded-2xl p-4 text-left"
                 style={{ boxShadow: "0 6px 0 #e8d5bf" }}
               >
