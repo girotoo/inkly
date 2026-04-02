@@ -12,21 +12,21 @@ export default function HomePage() {
     setMounted(true);
   }, []);
 
-  // 🛡️ LOGIQUE DE REDIRECTION
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
       router.push("/sign-up");
     }
   }, [isLoaded, isSignedIn, router]);
 
-  // Écran de chargement (pendant que Clerk vérifie la session)
-  if (!isLoaded || !mounted || (isLoaded && !isSignedIn)) {
+  if (!mounted || !isLoaded) {
     return (
       <div className="min-h-screen bg-[#FFF8F0] flex items-center justify-center">
         <div className="text-4xl animate-bounce">🖌️</div>
       </div>
     );
   }
+
+  if (!isSignedIn) return null;
 
   return (
     <main className="min-h-screen bg-[#FFF8F0] overflow-hidden relative">
@@ -78,7 +78,6 @@ export default function HomePage() {
         }
       `}</style>
 
-      {/* Background blobs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="blob absolute w-80 h-80 bg-[#FFD93D] opacity-20 -top-20 -right-20" />
         <div className="blob absolute w-72 h-72 bg-[#6BCB77] opacity-15 -bottom-20 -left-20" style={{ animationDelay: "3s" }} />
@@ -86,7 +85,6 @@ export default function HomePage() {
 
       <div className="relative z-10 flex flex-col items-center min-h-screen px-6 pt-12 pb-10">
 
-        {/* Header */}
         <div className="fade-up w-full flex justify-between items-center mb-10" style={{ animationDelay: "0.1s" }}>
           <h1 className="font-display text-3xl text-[#2D2D2D]">Inkly 🖌️</h1>
           <div className="flex items-center gap-2">
@@ -102,7 +100,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Welcome */}
         <div className="fade-up text-center mb-10" style={{ animationDelay: "0.2s" }}>
           <p className="text-[#999] text-sm font-semibold uppercase tracking-widest mb-1">Bienvenue,</p>
           <h2 className="font-display text-5xl text-[#2D2D2D]">
@@ -111,7 +108,6 @@ export default function HomePage() {
           <p className="text-[#bbb] text-sm mt-2">Prêt à gribouiller ?</p>
         </div>
 
-        {/* Main Play Button */}
         <div className="fade-up w-full max-w-xs mb-4" style={{ animationDelay: "0.3s" }}>
           <button
             onClick={() => router.push("/play")}
@@ -121,7 +117,6 @@ export default function HomePage() {
           </button>
         </div>
 
-        {/* Secondary buttons */}
         <div className="fade-up w-full max-w-xs flex gap-3" style={{ animationDelay: "0.4s" }}>
           <button
             onClick={() => router.push("/settings")}
@@ -137,7 +132,6 @@ export default function HomePage() {
           </button>
         </div>
 
-        {/* Stats card */}
         <div className="fade-up mt-10 w-full max-w-xs" style={{ animationDelay: "0.5s" }}>
           <div className="bg-white rounded-2xl p-5 border-2 border-[#f0e0cc]" style={{ boxShadow: "0 8px 0 #e8d5bf" }}>
             <p className="font-display text-lg text-[#2D2D2D] mb-4">🏅 Tes stats</p>
@@ -156,7 +150,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* How to play */}
         <div className="fade-up mt-6 w-full max-w-xs" style={{ animationDelay: "0.6s" }}>
           <div className="bg-[#4D96FF] rounded-2xl p-4 text-white" style={{ boxShadow: "0 6px 0 #2d6fcc" }}>
             <p className="font-display text-base mb-2">💡 Comment jouer</p>
