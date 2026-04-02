@@ -98,9 +98,9 @@ export default function Home() {
         </div>
 
         <div className="fade-up mt-10 w-full max-w-xs" style={{ animationDelay: "0.5s" }}>
-          <Link href="/home" className="btn-play rounded-2xl py-4 px-8 text-white font-display text-2xl text-center block">
-            🎮 Jouer maintenant
-          </Link>
+import PlayButton from "../components/PlayButton";
+
+<PlayButton />
         </div>
 
         <div className="fade-up mt-14 grid grid-cols-3 gap-3 w-full max-w-sm" style={{ animationDelay: "0.7s" }}>
