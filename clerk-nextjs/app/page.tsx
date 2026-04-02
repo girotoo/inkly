@@ -98,7 +98,7 @@ export default function Home() {
         </div>
 
         <div className="fade-up mt-10 w-full max-w-xs" style={{ animationDelay: "0.5s" }}>
-          <Link href="/sign-up" className="btn-play rounded-2xl py-4 px-8 text-white font-display text-2xl text-center block">
+          <Link href="/home" className="btn-play rounded-2xl py-4 px-8 text-white font-display text-2xl text-center block">
             🎮 Jouer maintenant
           </Link>
         </div>
