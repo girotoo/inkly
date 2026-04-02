@@ -16,18 +16,11 @@ export default function CreditsPage() {
     );
   }
 
-  const team = [
-    { emoji: "🎨", name: "Design & UI", role: "Interface & animations" },
-    { emoji: "⚙️", name: "Backend", role: "Serveurs & base de données" },
-    { emoji: "🖌️", name: "Game Design", role: "Mécaniques de jeu" },
-    { emoji: "🎵", name: "Audio", role: "Sons & musiques" },
-  ];
-
   const techs = [
     { emoji: "⚛️", name: "Next.js", desc: "Framework React" },
     { emoji: "🔐", name: "Clerk", desc: "Authentification" },
     { emoji: "🎨", name: "Tailwind CSS", desc: "Styles" },
-    { emoji: "🌐", name: "Socket.io", desc: "Temps réel" },
+    { emoji: "🔥", name: "Firebase", desc: "Base de données" },
   ];
 
   return (
@@ -49,10 +42,23 @@ export default function CreditsPage() {
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-8px); }
         }
+        @keyframes shimmer {
+          0% { background-position: -200% center; }
+          100% { background-position: 200% center; }
+        }
 
         .fade-up { animation: fadeUp 0.5s ease forwards; opacity: 0; }
         .blob { animation: blob 7s ease-in-out infinite; }
         .float { animation: float 3s ease-in-out infinite; }
+
+        .creator-badge {
+          background: linear-gradient(90deg, #FF6B35, #FFD93D, #FF6B35);
+          background-size: 200% auto;
+          animation: shimmer 3s linear infinite;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
 
         .btn-back {
           transition: all 0.1s;
@@ -73,7 +79,6 @@ export default function CreditsPage() {
           background: #FFF8F0;
           border: 2px solid #f0e0cc;
           border-radius: 999px;
-          transition: all 0.1s;
         }
       `}</style>
 
@@ -84,40 +89,33 @@ export default function CreditsPage() {
 
       <div className="relative z-10 flex flex-col items-center min-h-screen px-6 pt-12 pb-10">
 
-        {/* Header */}
         <div className="fade-up w-full flex items-center gap-3 mb-8" style={{ animationDelay: "0.1s" }}>
-          <button onClick={() => router.push("/")} className="btn-back rounded-xl px-3 py-2 text-xl">
-            ←
-          </button>
+          <button onClick={() => router.push("/")} className="btn-back rounded-xl px-3 py-2 text-xl">←</button>
           <h1 className="font-display text-3xl text-[#2D2D2D]">📜 Crédits</h1>
         </div>
 
-        {/* Hero */}
         <div className="fade-up text-center mb-8" style={{ animationDelay: "0.2s" }}>
           <div className="float text-6xl mb-3">🖌️</div>
           <h2 className="font-display text-4xl text-[#2D2D2D]">Inkly</h2>
-          <p className="text-[#999] text-sm mt-1">Fait avec ❤️ par une équipe passionnée</p>
+          <p className="text-[#999] text-sm mt-1">Fait avec ❤️ par passion</p>
         </div>
 
-        {/* Team */}
         <div className="fade-up card w-full max-w-xs p-5 mb-4" style={{ animationDelay: "0.3s" }}>
-          <p className="font-display text-base text-[#2D2D2D] mb-4">👥 L'équipe</p>
-          <div className="space-y-3">
-            {team.map((member, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-[#FFF8F0] rounded-xl flex items-center justify-center text-xl border-2 border-[#f0e0cc]">
-                  {member.emoji}
-                </div>
-                <div>
-                  <p className="font-bold text-[#2D2D2D] text-sm">{member.name}</p>
-                  <p className="text-xs text-[#999]">{member.role}</p>
-                </div>
-              </div>
-            ))}
+          <p className="font-display text-base text-[#2D2D2D] mb-4">👑 Créateur</p>
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 bg-[#FFF8F0] rounded-2xl flex items-center justify-center text-3xl border-2 border-[#f0e0cc]">
+              🧑‍💻
+            </div>
+            <div>
+              <p className="font-display text-xl creator-badge">Simão Cardoso Girôto</p>
+              <p className="text-xs text-[#999] mt-0.5">Fondateur & Développeur principal</p>
+              <span className="inline-block mt-1 text-[10px] font-bold bg-[#FF6B35] text-white px-2 py-0.5 rounded-full">
+                ✨ Créateur d'Inkly
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Tech stack */}
         <div className="fade-up card w-full max-w-xs p-5 mb-4" style={{ animationDelay: "0.4s" }}>
           <p className="font-display text-base text-[#2D2D2D] mb-4">🛠️ Technologies</p>
           <div className="grid grid-cols-2 gap-2">
@@ -133,7 +131,6 @@ export default function CreditsPage() {
           </div>
         </div>
 
-        {/* Thank you */}
         <div className="fade-up w-full max-w-xs" style={{ animationDelay: "0.5s" }}>
           <div className="bg-[#4D96FF] rounded-2xl p-4 text-white text-center" style={{ boxShadow: "0 6px 0 #2d6fcc" }}>
             <p className="font-display text-xl mb-1">🙏 Merci !</p>
