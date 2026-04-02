@@ -1,126 +1,163 @@
 "use client";
-import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const floatingItems = ["🎨", "✏️", "🖌️", "💡", "⭐", "🎯", "🖍️", "💬"];
-
-export default function Home() {
+export default function HomePage() {
+  const { user, isLoaded } = useUser();
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  if (!isLoaded || !mounted) {
+    return (
+      <div className="min-h-screen bg-[#FFF8F0] flex items-center justify-center">
+        <div className="text-4xl animate-bounce">🖌️</div>
+      </div>
+    );
+  }
+
   return (
-    <main className="min-h-screen bg-[#FFF8F0] overflow-hidden relative font-sans">
+    <main className="min-h-screen bg-[#FFF8F0] overflow-hidden relative">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
-
         * { font-family: 'Nunito', sans-serif; }
         .font-display { font-family: 'Fredoka One', cursive; }
 
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(10deg); }
-        }
         @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(30px); }
+          from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
         }
         @keyframes blob {
           0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
           50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
         }
+        @keyframes pulse-ring {
+          0% { transform: scale(1); opacity: 0.8; }
+          100% { transform: scale(1.3); opacity: 0; }
+        }
 
-        .float-item { animation: float linear infinite; }
-        .fade-up { animation: fadeUp 0.6s ease forwards; opacity: 0; }
+        .fade-up { animation: fadeUp 0.5s ease forwards; opacity: 0; }
         .blob { animation: blob 7s ease-in-out infinite; }
 
-        .btn-play {
-          background: #FF6B35;
-          box-shadow: 0 6px 0 #C94E1E;
+        .btn-main {
           transition: all 0.1s;
+          box-shadow: 0 6px 0 #C94E1E;
+          background: #FF6B35;
         }
-        .btn-play:hover { transform: translateY(3px); box-shadow: 0 3px 0 #C94E1E; }
-        .btn-play:active { transform: translateY(6px); box-shadow: 0 0px 0 #C94E1E; }
+        .btn-main:hover { transform: translateY(3px); box-shadow: 0 3px 0 #C94E1E; }
+        .btn-main:active { transform: translateY(6px); box-shadow: none; }
 
-        .card {
+        .btn-ghost {
+          transition: all 0.1s;
+          box-shadow: 0 6px 0 #d1c4b0;
           background: white;
-          border-radius: 20px;
-          box-shadow: 0 8px 0 #e8d5bf;
-          border: 2px solid #f0e0cc;
+        }
+        .btn-ghost:hover { transform: translateY(3px); box-shadow: 0 3px 0 #d1c4b0; }
+        .btn-ghost:active { transform: translateY(6px); box-shadow: none; }
+
+        .avatar-ring::before {
+          content: '';
+          position: absolute;
+          inset: -4px;
+          border-radius: 50%;
+          background: #FF6B35;
+          animation: pulse-ring 2s ease-out infinite;
+          z-index: -1;
         }
       `}</style>
 
+      {/* Background blobs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="blob absolute w-96 h-96 bg-[#FFD93D] opacity-20 -top-20 -left-20" />
-        <div className="blob absolute w-80 h-80 bg-[#FF6B35] opacity-15 top-1/3 -right-20" style={{ animationDelay: "2s" }} />
-        <div className="blob absolute w-72 h-72 bg-[#6BCB77] opacity-20 -bottom-10 left-1/4" style={{ animationDelay: "4s" }} />
-        <div className="blob absolute w-64 h-64 bg-[#4D96FF] opacity-15 bottom-1/3 right-1/4" style={{ animationDelay: "3s" }} />
+        <div className="blob absolute w-80 h-80 bg-[#FFD93D] opacity-20 -top-20 -right-20" />
+        <div className="blob absolute w-72 h-72 bg-[#6BCB77] opacity-15 -bottom-20 -left-20" style={{ animationDelay: "3s" }} />
       </div>
 
-      {mounted && floatingItems.map((emoji, i) => (
-        <div
-          key={i}
-          className="float-item absolute text-3xl pointer-events-none select-none"
-          style={{
-            left: `${8 + (i * 12)}%`,
-            top: `${10 + (i % 3) * 25}%`,
-            animationDuration: `${3 + i * 0.5}s`,
-            animationDelay: `${i * 0.3}s`,
-            opacity: 0.6,
-          }}
-        >
-          {emoji}
-        </div>
-      ))}
+      <div className="relative z-10 flex flex-col items-center min-h-screen px-6 pt-12 pb-10">
 
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 py-16 text-center">
-
-        <div className="fade-up" style={{ animationDelay: "0.1s" }}>
-          <div className="inline-flex items-center gap-3 mb-2">
-            <div className="w-14 h-14 bg-[#FF6B35] rounded-2xl flex items-center justify-center text-3xl shadow-lg rotate-6">
-              🖌️
-            </div>
-            <h1 className="font-display text-7xl text-[#2D2D2D] tracking-wide">
-              Inkly
-            </h1>
+        {/* Header */}
+        <div className="fade-up w-full flex justify-between items-center mb-10" style={{ animationDelay: "0.1s" }}>
+          <h1 className="font-display text-3xl text-[#2D2D2D]">Inkly 🖌️</h1>
+          <div className="flex items-center gap-2">
+            {user?.imageUrl && (
+              <div className="relative avatar-ring">
+                <img
+                  src={user.imageUrl}
+                  alt="avatar"
+                  className="w-10 h-10 rounded-full border-2 border-white shadow-md"
+                />
+              </div>
+            )}
           </div>
-          <p className="font-display text-xl text-[#FF6B35] tracking-widest uppercase mt-1">
-            Draw • Guess • Win
-          </p>
         </div>
 
-        <div className="fade-up mt-6 max-w-sm" style={{ animationDelay: "0.3s" }}>
-          <p className="text-[#666] text-lg font-semibold leading-relaxed">
-            Le jeu de dessin multijoueur où tes gribouillages font rire (ou pleurer) 😂
-          </p>
+        {/* Welcome */}
+        <div className="fade-up text-center mb-10" style={{ animationDelay: "0.2s" }}>
+          <p className="text-[#999] text-sm font-semibold uppercase tracking-widest mb-1">Bienvenue,</p>
+          <h2 className="font-display text-5xl text-[#2D2D2D]">
+            {user?.firstName || "Joueur"} 👋
+          </h2>
+          <p className="text-[#bbb] text-sm mt-2">Prêt à gribouiller ?</p>
         </div>
 
+        {/* Main Play Button */}
+        <div className="fade-up w-full max-w-xs mb-4" style={{ animationDelay: "0.3s" }}>
+          <button
+            onClick={() => router.push("/play")}
+            className="btn-main w-full rounded-2xl py-5 text-white font-display text-3xl text-center"
+          >
+            🎮 Jouer
+          </button>
+        </div>
+
+        {/* Secondary buttons */}
+        <div className="fade-up w-full max-w-xs flex gap-3" style={{ animationDelay: "0.4s" }}>
+          <button
+            onClick={() => router.push("/settings")}
+            className="btn-ghost flex-1 rounded-2xl py-4 text-[#2D2D2D] font-display text-xl text-center"
+          >
+            ⚙️ Réglages
+          </button>
+          <button
+            onClick={() => router.push("/credits")}
+            className="btn-ghost flex-1 rounded-2xl py-4 text-[#2D2D2D] font-display text-xl text-center"
+          >
+            📜 Crédits
+          </button>
+        </div>
+
+        {/* Stats card */}
         <div className="fade-up mt-10 w-full max-w-xs" style={{ animationDelay: "0.5s" }}>
-import PlayButton from "../components/PlayButton";
-
-<PlayButton />
-        </div>
-
-        <div className="fade-up mt-14 grid grid-cols-3 gap-3 w-full max-w-sm" style={{ animationDelay: "0.7s" }}>
-          {[
-            { emoji: "✏️", title: "Dessine", desc: "Un objet secret à faire deviner" },
-            { emoji: "🔍", title: "Devine", desc: "Trouve les dessins des autres" },
-            { emoji: "🏆", title: "Gagne", desc: "Grimpe le classement" },
-          ].map((f, i) => (
-            <div key={i} className="card p-3 flex flex-col items-center gap-1">
-              <span className="text-3xl">{f.emoji}</span>
-              <span className="font-display text-sm text-[#2D2D2D]">{f.title}</span>
-              <span className="text-xs text-[#999] leading-tight">{f.desc}</span>
+          <div className="bg-white rounded-2xl p-5 border-2 border-[#f0e0cc]" style={{ boxShadow: "0 8px 0 #e8d5bf" }}>
+            <p className="font-display text-lg text-[#2D2D2D] mb-4">🏅 Tes stats</p>
+            <div className="grid grid-cols-3 gap-2 text-center">
+              {[
+                { label: "Parties", value: "0" },
+                { label: "Victoires", value: "0" },
+                { label: "Meilleur", value: "—" },
+              ].map((s, i) => (
+                <div key={i} className="bg-[#FFF8F0] rounded-xl p-2">
+                  <p className="font-display text-2xl text-[#FF6B35]">{s.value}</p>
+                  <p className="text-xs text-[#999] font-semibold">{s.label}</p>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
 
-        <div className="fade-up mt-8" style={{ animationDelay: "0.9s" }}>
-          <div className="inline-flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-md border border-[#f0e0cc]">
-            <span className="w-2 h-2 bg-[#6BCB77] rounded-full animate-pulse" />
-            <span className="text-sm font-bold text-[#666]">2–8 joueurs • Gratuit • Aucun téléchargement</span>
+        {/* How to play */}
+        <div className="fade-up mt-6 w-full max-w-xs" style={{ animationDelay: "0.6s" }}>
+          <div className="bg-[#4D96FF] rounded-2xl p-4 text-white" style={{ boxShadow: "0 6px 0 #2d6fcc" }}>
+            <p className="font-display text-base mb-2">💡 Comment jouer</p>
+            <ol className="text-sm space-y-1 font-semibold opacity-90">
+              <li>1. Rejoins ou crée une salle</li>
+              <li>2. Dessine ton mot secret</li>
+              <li>3. Devine les dessins des autres</li>
+              <li>4. Le meilleur score gagne !</li>
+            </ol>
           </div>
         </div>
 
